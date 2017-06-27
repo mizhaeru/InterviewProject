@@ -10,7 +10,7 @@ namespace Interview.Entities
       
     }
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
+    public int? Id { get; set; }
     public string Name { get; set; }
     public string StringVal { get; set; }
     public int? IntVal { get; set; }

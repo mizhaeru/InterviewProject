@@ -1,73 +1,86 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Interview.Data;
 using Interview.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Interview.Api.Controllers
 {
   [Route("api/[controller]")]
   public class AssetsController : Controller
   {
-    // GET api/values
+    private InterviewDbContext _dbContext;
+
+    public AssetsController(InterviewDbContext dbContext)
+    {
+      _dbContext = dbContext;
+    }
+
+    
+    /// <summary>
+    /// Return all assets in a system
+    /// </summary>
+    /// <returns></returns>
+    [Route("getall")]
     [HttpGet]
-    public IEnumerable<Asset> Get()
+    public async Task<IActionResult> GetAsync()
     {
-      var asset = new Asset()
+      return Ok(await _dbContext.Assets.ToListAsync<Asset>());
+    }
+
+    /// <summary>
+    /// Get an asset by assetId
+    /// </summary>
+    /// <param name="assetId"></param>
+    /// <returns></returns>
+    [HttpGet("get/{assetId}")]
+    public async Task<IActionResult> GetAsync(int assetId)
+    {
+      if (await _dbContext.Assets.AnyAsync(x => x.Id == assetId))
       {
-        Id = 1,
-        Name = "test",
-        Fields = new List<AssetFields>()
-        {
-          new AssetFields()
-          {
-            Id = 1,
-            Name = "test asset field",
-            StringVal = "string val"
-
-          }
-        }
-      };
-      var list = new List<Asset>();
-      list.Add(asset);
-      return list;
+        return BadRequest();
+      }
+      var valToRemove = await _dbContext.Assets.FirstOrDefaultAsync(x => x.Id == assetId);
+      _dbContext.Assets.Remove(valToRemove);
+      await _dbContext.SaveChangesAsync();
+      return Ok(valToRemove);
     }
 
-    // GET api/values/5
-    [HttpGet("{id}")]
-    public Asset Get(int id)
+    /// <summary>
+    /// Create an asset
+    /// </summary>
+    /// <param name="newAsset"></param>
+    /// <returns></returns>
+    [HttpPut("create")]
+    public async Task<IActionResult> CreateAsync([FromBody] Asset newAsset)
     {
-      return new Asset()
+      if (await _dbContext.Assets.AnyAsync(x => x.Id == newAsset.Id))
       {
-        Id = 1,
-        Name = "test",
-        Fields = new List<AssetFields>()
-        {
-          new AssetFields()
-          {
-            Id = 1,
-            Name = "test asset field",
-            StringVal = "string val"
-
-          }
-        }
-      };
+        return BadRequest();
+      }
+      _dbContext.Assets.Add(newAsset);
+      _dbContext.SaveChanges();
+      return Ok(newAsset);
     }
 
-    // POST api/values
-    [HttpPost]
-    public void Post([FromBody] Asset value)
-    {
-    }
-
-    // PUT api/values/5
-    [HttpPut("{id}")]
-    public void Put(int id, [FromBody] Asset value)
-    {
-    }
-
-    // DELETE api/values/5
-    [HttpDelete("{id}")]
-    public void Delete(int id)
-    {
+    /// <summary>
+    /// Delete an asset
+    /// </summary>
+    /// <param name="assetId"></param>
+    /// <returns></returns>
+    [HttpDelete("delete/{assetId}")]
+    public async Task<IActionResult> DeleteAsync(int assetId)
+    { 
+      if (await _dbContext.Assets.AnyAsync(x => x.Id == assetId))
+      {
+        return BadRequest();
+      }
+      var valToRemove = await _dbContext.Assets.FirstOrDefaultAsync(x => x.Id == assetId);
+      _dbContext.Assets.Remove(valToRemove);
+      await _dbContext.SaveChangesAsync();
+      return Ok(valToRemove);
     }
   }
 }
