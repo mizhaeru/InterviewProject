@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Interview.Entities\Interview.Entities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTO\" />
+  </ItemGroup>
+
 </Project>
