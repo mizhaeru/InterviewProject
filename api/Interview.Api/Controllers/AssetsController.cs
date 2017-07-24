@@ -3,12 +3,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Interview.Data;
 using Interview.Entities;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Interview.Api.Controllers
 {
   [Route("api/[controller]")]
+  [DisableCors]
   public class AssetsController : Controller
   {
     private InterviewDbContext _dbContext;

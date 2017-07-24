@@ -8,9 +8,10 @@ using Interview.Data;
 namespace Interview.Data.Migrations
 {
     [DbContext(typeof(InterviewDbContext))]
-    partial class InterviewDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170627195016_AddIsDeleted")]
+    partial class AddIsDeleted
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")

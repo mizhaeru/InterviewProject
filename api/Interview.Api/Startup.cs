@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -26,6 +27,13 @@ namespace Interview.Api
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddCors(options =>
+      {
+        options.AddPolicy("AllowSpecificOrigin",
+            builder => builder.WithOrigins("http://example.com"));
+        options.AddPolicy("AllowSpecificOrigin",
+            builder => builder.WithOrigins("http://localhost:4200"));
+      });
       // Add framework services.
       services.AddMvc();
 
@@ -33,7 +41,7 @@ namespace Interview.Api
       services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "Interview API", Version = "v1"}); });
       
       services.AddDbContext<InterviewDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("InterviewDb")));
-
+      
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +49,9 @@ namespace Interview.Api
     {
       loggerFactory.AddConsole(Configuration.GetSection("Logging"));
       loggerFactory.AddDebug();
+      // Shows UseCors with CorsPolicyBuilder.
+      app.UseCors(builder =>
+         builder.WithOrigins("http://localhost:4200"));
 
       app.UseMvc();
 
@@ -53,6 +64,9 @@ namespace Interview.Api
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Interview API V1");
       });
 
+     
+
+      // context.Database.EnsureDeleted();
       DbInitializer.Initialize(context);
     }
   }

@@ -1,5 +1,8 @@
-﻿using Interview.Entities;
+﻿using System.Linq;
+using Interview.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Interview.Data
 {
@@ -10,6 +13,19 @@ namespace Interview.Data
       : base(options)
     {
       
+    }
+
+    public bool AllMigrationsApplied()
+    {
+      var applied = this.GetService<IHistoryRepository>()
+        .GetAppliedMigrations()
+        .Select(m => m.MigrationId);
+
+      var total = this.GetService<IMigrationsAssembly>()
+        .Migrations
+        .Select(m => m.Key);
+
+      return !total.Except(applied).Any();
     }
 
     public DbSet<Asset> Assets { get; set; }

@@ -8,9 +8,10 @@ using Interview.Data;
 namespace Interview.Data.Migrations
 {
     [DbContext(typeof(InterviewDbContext))]
-    partial class InterviewDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170627193528_AddSystemAttrs")]
+    partial class AddSystemAttrs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -26,8 +27,6 @@ namespace Interview.Data.Migrations
                     b.Property<DateTime>("DateCreatedUTC");
 
                     b.Property<DateTime>("DateModifiedUTC");
-
-                    b.Property<bool>("IsDeleted");
 
                     b.Property<Guid>("ModifiedBy");
 

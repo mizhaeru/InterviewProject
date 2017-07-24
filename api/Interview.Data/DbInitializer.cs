@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Interview.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Interview.Data
 {
@@ -7,18 +9,20 @@ namespace Interview.Data
   {
     public static void Initialize(InterviewDbContext context)
     {
-      context.Database.EnsureCreated();
+      context.Database.Migrate();
       SeedData(context);
     }
 
     private static void SeedData(InterviewDbContext context)
     {
-      if(context.Assets.Any())
+      if (context.Assets.Any())
       {
         return;
       };
       context.Assets.AddRange(Asset.GetSeedData());
       context.SaveChanges();
     }
+
+
   }
 }
