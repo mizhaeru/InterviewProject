@@ -27,33 +27,32 @@ namespace Interview.Api
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddCors(options =>
-      {
-        options.AddPolicy("AllowSpecificOrigin",
-            builder => builder.WithOrigins("http://example.com"));
-        options.AddPolicy("AllowSpecificOrigin",
-            builder => builder.WithOrigins("http://localhost:4200"));
-      });
-      // Add framework services.
-      services.AddMvc();
+
+            services.AddCors();
+            //      services.AddCors(options =>
+            //{
+            //  options.AddPolicy("AllowSpecificOrigin",
+            //      builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+            //});
+            // Add framework services.
+            services.AddMvc();
 
       // Register the Swagger generator, defining one or more Swagger documents
       services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "Interview API", Version = "v1"}); });
       
       services.AddDbContext<InterviewDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("InterviewDb")));
-      
-    }
+
+        }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, InterviewDbContext context)
     {
       loggerFactory.AddConsole(Configuration.GetSection("Logging"));
       loggerFactory.AddDebug();
-      // Shows UseCors with CorsPolicyBuilder.
-      app.UseCors(builder =>
-         builder.WithOrigins("http://localhost:4200"));
+            // Shows UseCors with CorsPolicyBuilder.
+            app.UseCors(b => b.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod());
 
-      app.UseMvc();
+            app.UseMvc();
 
       // Enable middleware to serve generated Swagger as a JSON endpoint.
       app.UseSwagger();

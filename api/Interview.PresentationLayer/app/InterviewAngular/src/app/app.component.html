@@ -1,0 +1,22 @@
+﻿<!--The whole content below can be removed with the new code.-->
+<div style="text-align:center">
+  <h1>
+   CRUD operations for Asset Details
+  </h1>
+  </div>
+<div class="content">
+  <br />
+   <button class="ui-button ui-button-icon-primary" (click) ="onSave()">POST!</button>
+   <button class="ui-button ui-button-icon-primary" (click)="onGetAssetDetailId()">GET!</button>
+  <input type="text" placeholder="Id to get" [(ngModel)]="assetDetail.id" id="txtDelete" />  
+   <button class="ui-button ui-button-icon-primary" (click)="onDelete()">DELETE!</button>
+   <input type="text" placeholder="Id to delete" [(ngModel)]="assetDetail.id" id="txtDelete" />  
+   <button class="ui-button ui-button-icon-primary" (click)="onPut()">PUT!</button>
+   <input type="text"placeholder="id to update" [(ngModel)]="assetDetail.id"  id="txtUpdate" />
+
+  <br />
+  <child-component>
+  </child-component>
+
+</div>
+

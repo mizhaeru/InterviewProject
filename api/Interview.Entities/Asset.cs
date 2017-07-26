@@ -11,6 +11,7 @@ namespace Interview.Entities
     public Asset()
     {
       Fields = new HashSet<AssetFields>();
+      Details = new HashSet<AssetDetails>();
     }
 
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -23,8 +24,10 @@ namespace Interview.Entities
     public Guid ModifiedBy { get; set; }
     public bool IsDeleted { get; set; }
     public ICollection<AssetFields> Fields { get; set; }
+    public ICollection<AssetDetails> Details { get; set; }
 
-    public static List<Asset> GetSeedData()
+
+        public static List<Asset> GetSeedData()
     {
       return new List<Asset>()
       {

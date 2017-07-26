@@ -3,13 +3,15 @@ using Interview.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.Extensions.Configuration;
 
 namespace Interview.Data
 {
   public class InterviewDbContext : DbContext
   {
 
-    public InterviewDbContext(DbContextOptions<InterviewDbContext> options)
+ 
+        public InterviewDbContext(DbContextOptions<InterviewDbContext> options)
       : base(options)
     {
       
@@ -30,5 +32,6 @@ namespace Interview.Data
 
     public DbSet<Asset> Assets { get; set; }
     public DbSet<AssetFields> AssetFields { get; set; }
+    public DbSet<AssetDetails> AssetDetails { get; set; }
   }
 }
